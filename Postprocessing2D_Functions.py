@@ -106,7 +106,7 @@ def read_count():
     """ 
     
     #read the count number of the detector that we used for synchronization
-    count_reading= np.loadtxt("./handshake_det.txt")   
+    count_reading = np.loadtxt("./handshake_det.txt")   
     count=[]
     
     for i in range(len(count_reading)):
@@ -143,11 +143,11 @@ def cross_correlation(time,sampling_time,index):
     #normalizing the counts to visualize it better with the position data
     normalized_count = (count_first_cycle-np.min(count_first_cycle))/(np.max(count_first_cycle)-np.min(count_first_cycle)) 
     #read the data of TCP position from the robot
-    df = pd.read_csv("x_y_robot_position.txt", sep=",")
+    df = np.loadtxt('x_y_robot_position.txt', delimiter=',')
     pos_x=[]
     
     for i in range(index):
-        pos_x.append(df.iat[i, 0]-df.iat[0,0])
+        pos_x.append(df[i, 0]-df[0,0])
 
     normalized_pos = (pos_x - np.min(pos_x)) / (np.max(pos_x) - np.min(pos_x))  
 
@@ -165,7 +165,8 @@ def cross_correlation(time,sampling_time,index):
 
 ##############################################################################
 def visualisation(time,sampling_time,index,lag):
-    """Function that produces of plot of the loss
+    """Function that produces of plot the counts and the robot position during the part of the 
+    experiment for the handshake
     
     Input:
         - time : The minimum duration of the particle round movement in front 
@@ -178,7 +179,7 @@ def visualisation(time,sampling_time,index,lag):
         point and the robot start point [s] 
         
     Output:
-        - Plot of the loss [-]   
+        - Plot of the counts and the robot position for a visualisation of the handshake [-]   
         
     """ 
     
@@ -203,7 +204,7 @@ def visualisation(time,sampling_time,index,lag):
     pos_x=[]
     for i in range(index):
         pos_x.append(df.iat[i, 0]-df.iat[0,0])
-
+    print(pos_x)
     normalized_pos = (pos_x - np.min(pos_x)) / (np.max(pos_x) - np.min(pos_x))
     time= np.loadtxt("./time.txt")
     time_vector=[]

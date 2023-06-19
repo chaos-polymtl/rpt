@@ -1,7 +1,8 @@
 import re
 import pandas as pd
 from Postprocessing2D_Functions import *
-
+import os
+from os.path import exists
 
 ####################### Clean Main RPT Output  ###############################
 
@@ -35,6 +36,30 @@ with open('counts.txt', 'r') as file:
 #Delete the first 3 lines of the clean_count.txt
 with open('counts.txt', 'w') as file:
         file.writelines(lines[3:])
+        
+Position_file = "pos.csv"
+
+if exists(Position_file)==True:
+    base = os.path.splitext(Position_file)[0]
+    os.rename(Position_file, base + ".txt")
+    os.rename('pos.txt', 'x_y_robot_position.txt')        
+        
+        
+with open('x_y_robot_position.txt','r') as file:
+        text = file.read()
+text = text.replace("[", "")
+text = text.replace("]", "")
+text = text.replace('"', "")
+
+
+# Write the modified text 
+with open('x_y_robot_position.txt', 'w') as file:
+        file.write(text)
+
+Time_file = "time.csv"
+if exists(Time_file)==True:
+    base = os.path.splitext(Time_file)[0]
+    os.rename(Time_file, base + ".txt")    
 ##############################################################################
 
  
@@ -42,7 +67,7 @@ with open('counts.txt', 'w') as file:
 
 amps_id_vector=[6,8,17,20] # ID of the amplifiers used
 amps_id_handshake = 8 # ID of detector used for the handshake
-t=250 # Total time in minutes
+t=223 # Total time in minutes
 sampling_time=10 # Sampling time in milliseconds
      
 write_count_all_det(amps_id_vector,t, sampling_time)   
@@ -56,7 +81,7 @@ index=3459
 
 cross_correlation(time,sampling_time,index)
 
-lag=12.8
+lag=11.55
 visualisation(time,sampling_time,index,lag)
 ##############################################################################
  
