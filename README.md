@@ -13,15 +13,15 @@ Initially, the code `PostprocessingDatafile_main` reads the original experiment 
    
 The program generates a `.txt` file named `counts_all.txt`, containing all the counts from the amplifiers involved in the experiment. Additionally, the program generates another `.txt` file named `handshake_det.txt`, which includes the counts from the detector used for the handshake to synchronize the clocks.
 
-4. `Synchronization of the robot clock and the RPT clock`
+3. `Synchronization of the robot clock and the RPT clock`
    
 To synchronize the RPT clock with the robot clock, the program implements the cross-correlation technique to calculate the lag between them. Cross-correlation involves comparing the count data from the detectors with the position data from the robot during the handshake phase.
 
-6. `Denoising the data`
+4. `Denoising the data`
 
 Due to the stochastic nature of the radioactive data, before using the data to train the ANN, it must be denoised. To achieve this, the program employs the Savitzky-Golay method.
  
-8. `Interpolating the data`
+5. `Interpolating the data`
 
 In the final step, to address the mismatched sampling times between the robot and the RPT system, we perform data interpolation. The counts from the amplifiers are taken at a consistent sampling interval of 10 milliseconds, while the robot samples its position at seemingly irregular intervals. To rectify this disparity, interpolation is used to synchronize the count data from the amplifiers with the corresponding timestamps of the robot's position samples. This process allows for the estimation of count values at the specific timestamps of the robot's position measurements.
 
