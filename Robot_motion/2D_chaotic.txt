@@ -1,0 +1,254 @@
+import random as rd 
+
+import time
+import csv
+time_real=[]
+real_pos=[]
+t=time.time()
+
+amovel(posx(200,0,0,0,0,0),t=5,mod=DR_MV_MOD_REL)
+while True:
+  if check_motion()==0:
+   break
+  if check_motion()==2:
+   time_real.append(time.time()-t)
+   real_pos.append(get_current_posx())
+   time_real.append(time.time()-t)
+mwait(0)
+
+amovel(posx(-200,0,0,0,0,0),t=5,mod=DR_MV_MOD_REL)
+while True:
+  if check_motion()==0:
+   break
+  if check_motion()==2:
+   time_real.append(time.time()-t)
+   real_pos.append(get_current_posx())
+   time_real.append(time.time()-t)    
+mwait(0)
+
+amovel(posx(0,100,0,0,0,0),t=5,mod=DR_MV_MOD_REL)
+while True:
+  if check_motion()==0:
+   break
+  if check_motion()==2:
+   time_real.append(time.time()-t)
+   real_pos.append(get_current_posx())
+   time_real.append(time.time()-t)
+mwait(0)
+    
+L_1=rd.sample(range(2,22),20)
+path_1=[1]
+    
+for j in range(1,7):
+    
+        L_1=rd.sample(range(2,22),20)
+        path_1=[1]
+        
+        for i in range(1,22):  
+            if i==1:
+                amovel(posx(200,0,0,0,0,0),t=5,mod=DR_MV_MOD_REL)
+                while True:
+                  if check_motion()==0:
+                   break
+                  if check_motion()==2:
+                   time_real.append(time.time()-t)
+                   real_pos.append(get_current_posx())
+                   time_real.append(time.time()-t)
+                mwait(0)
+
+                
+                amovel(posx(-200,0,0,0,0,0),t=5,mod=DR_MV_MOD_REL)
+                while True:
+                  if check_motion()==0:
+                   break
+                  if check_motion()==2:
+                   time_real.append(time.time()-t)
+                   real_pos.append(get_current_posx())
+                   time_real.append(time.time()-t)
+                mwait(0)
+                
+            else:
+                
+                ####  START CODE BY THOMAS ####
+                
+                pos_1=L_1[i-2]
+                delta_1=(path_1[len(path_1)-1]-pos_1)*10
+                
+                amovel(posx(0,delta_1,0,0,0,0),t=5,mod=DR_MV_MOD_REL)    
+                while True:
+                  if check_motion()==0:
+                    break
+                  if check_motion()==2:
+                    time_real.append(time.time()-t)
+                    real_pos.append(get_current_posx())
+                    time_real.append(time.time()-t)
+                mwait(0)
+                
+                path_1.append(pos_1)
+                
+                amovel(posx(200,0,0,0,0,0),t=5,mod=DR_MV_MOD_REL)    
+                
+                while True:
+                  if check_motion()==0:
+                    break
+                  if check_motion()==2:
+                    time_real.append(time.time()-t)
+                    real_pos.append(get_current_posx())
+                    time_real.append(time.time()-t)
+                mwait(0)
+                
+                amovel(posx(-200,0,0,0,0,0),t=5,mod=DR_MV_MOD_REL)
+                
+                while True:
+                  if check_motion()==0:
+                    break
+                  if check_motion()==2:
+                    time_real.append(time.time()-t)
+                    real_pos.append(get_current_posx())
+                    time_real.append(time.time()-t)
+                mwait(0)
+        
+        # Robot have to return to his original position
+        
+        last_pos_1=L_1[i-2]
+        last_moov_1=(last_pos_1-1)*10
+        amovel(posx(0,last_moov_1,0,0,0,0),t=5,mod=DR_MV_MOD_REL)    
+        
+        
+        
+        while True:
+          if check_motion()==0:
+           break
+          if check_motion()==2:
+           time_real.append(time.time()-t)
+           real_pos.append(get_current_posx())
+           time_real.append(time.time()-t)
+        mwait(0)
+        
+        L_2=rd.sample(range(2,22),20)
+        path_2=[1]
+        
+        for i in range(1,22):  
+                if i==1:
+                    amovel(posx(0,-200,0,0,0,0),t=5,mod=DR_MV_MOD_REL)   
+                    
+                    while True:
+                      if check_motion()==0:
+                       break
+                      if check_motion()==2:
+                       time_real.append(time.time()-t)
+                       real_pos.append(get_current_posx())
+                       time_real.append(time.time()-t)
+                    mwait(0)
+                    
+                    amovel(posx(0,200,0,0,0,0),t=5,mod=DR_MV_MOD_REL)
+                    while True:
+                      if check_motion()==0:
+                       break
+                      if check_motion()==2:
+                       time_real.append(time.time()-t)
+                       real_pos.append(get_current_posx())
+                       time_real.append(time.time()-t)
+                    mwait(0)
+                else:
+                    
+                    ####  START CODE BY THOMAS ####
+                    
+                    pos_2=L_2[i-2]
+                    delta_2=(path_2[len(path_2)-1]-pos_2)*10
+                    delta_2=-delta_2
+                    
+                    amovel(posx(delta_2,0,0,0,0,0),t=5,mod=DR_MV_MOD_REL)    
+                    while True:
+                      if check_motion()==0:
+                        break
+                      if check_motion()==2:
+                        time_real.append(time.time()-t)
+                        real_pos.append(get_current_posx())
+                        time_real.append(time.time()-t)
+                    mwait(0)
+                    
+                    path_2.append(pos_2)
+                    
+                    amovel(posx(0,-200,0,0,0,0),t=5,mod=DR_MV_MOD_REL)    
+                    
+                    while True:
+                      if check_motion()==0:
+                        break
+                      if check_motion()==2:
+                        time_real.append(time.time()-t)
+                        real_pos.append(get_current_posx())
+                        time_real.append(time.time()-t)
+                    mwait(0)
+                    
+                    amovel(posx(0,200,0,0,0,0),t=5,mod=DR_MV_MOD_REL)
+                    
+                    while True:
+                      if check_motion()==0:
+                        break
+                      if check_motion()==2:
+                        time_real.append(time.time()-t)
+                        real_pos.append(get_current_posx())
+                        time_real.append(time.time()-t)
+                    mwait(0)
+            
+            # Robot have to return to his original position
+            
+        last_pos_2=L_2[i-2]
+        last_moov_2=(last_pos_2-1)*10
+        last_moov_2=-last_moov_2
+        amovel(posx(last_moov_2,0,0,0,0,0),t=5,mod=DR_MV_MOD_REL)    
+            
+            # Robot is back to his original position 
+            
+        
+        while True:
+            if check_motion()==0:
+             break
+            if check_motion()==2:
+             time_real.append(time.time()-t)
+             real_pos.append(get_current_posx())
+             time_real.append(time.time()-t)
+        mwait(0)
+          
+              
+amovel(posx(0,-100,0,0,0,0),t=50,mod=DR_MV_MOD_REL)
+while True:
+  if check_motion()==0:
+   break
+  if check_motion()==2:
+   time_real.append(time.time()-t)
+   real_pos.append(get_current_posx())
+   time_real.append(time.time()-t)
+mwait(0)   
+
+
+amovel(posx(100,0,0,0,0,0),t=50,mod=DR_MV_MOD_REL)
+while True:
+  if check_motion()==0:
+   break
+  if check_motion()==2:
+   time_real.append(time.time()-t)
+   real_pos.append(get_current_posx())
+   time_real.append(time.time()-t)
+mwait(0)
+
+amove_spiral(rev=5,rmax=95,lmax=0,time=150,axis=DR_AXIS_Z,ref=DR_BASE)
+
+while True:
+  if check_motion()==0:
+   break
+  if check_motion()==2:
+   time_real.append(time.time()-t)
+   real_pos.append(get_current_posx())
+   time_real.append(time.time()-t)    
+mwait(0)         
+            
+   
+with open("/media/dra/USB/pos.csv", "w") as file:
+    writer = csv.writer(file)
+    writer.writerows(real_pos)
+
+with open("/media/dra/USB/zaman.csv", "w") as file_time:
+     writer = csv.writer(file_time)
+     writer.writerows(map(lambda x: [x], time_real)) 
