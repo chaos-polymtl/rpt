@@ -7,15 +7,15 @@ It is divided into two folders. The folder `Raw_Data_Post_Processing` contains t
 The raw data obtained from the experiment at RPT laboratory at polytechnique Montreal requires post-processing before any type of analysing. To facilitate data analysis, a post-processing code has been developed. This code is developed to prepare a data set for ANN position reconstruction consisting of five main parts:
 1. `Cleaning the raw data`
    
-Initially, the code `PostprocessingDatafile_main` reads the original experiment file, `Data.txt`, which contains measurements from all 26 amplifiers. The counts recorded by each amplifier, whether they have been active during the experiment or not, will be extracted and written to another text file called `counts.txt`.
+Initially, the code `PostprocessingDatafile_main` reads the original experiment file, `Data.txt`, which contains measurements from 26 channels. The counts recorded by each amplifier, whether they have been active during the experiment or not, will be extracted and written to another text file called `counts.txt`.
 
 2. `Organizing the counts`
    
-The program generates a `.txt` file named `counts_all.txt`, containing all the counts from the amplifiers involved in the experiment. Additionally, the program generates another `.txt` file named `handshake_det.txt`, which includes the counts from the detector used for the handshake to synchronize the clocks.
+The program generates a `.txt` file named `counts_all.txt`, containing the counts from the amplifiers involved in the experiment. Additionally, the program generates another `.txt` file named `handshake_det.txt`, which includes the counts from the solo detector used for the handshake to synchronize the clocks.
 
 3. `Synchronization of the robot clock and the RPT clock`
    
-To synchronize the RPT clock with the robot clock, the program implements the cross-correlation technique to calculate the lag between them. Cross-correlation involves comparing the count data from the detectors with the position data from the robot during the handshake phase.
+The RPT system and robot are .To synchronize the RPT clock with the robot clock, the program implements the cross-correlation technique to calculate the lag between them. Cross-correlation involves comparing the count data from the detectors with the position data from the robot during the handshake phase.
 
 4. `Denoising the data`
 
