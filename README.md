@@ -4,7 +4,7 @@ This repository includes all the data, script and codes that were used for recon
 It is divided into two folders. The folder `Raw_Data_Post_Processing` contains the files that used for post-processing the raw data from the experiments. The second folder, called `ANN_Recostruction`, contains the files that used to train the ANN and also the ANN reconstruction codes.
 
 # Post-processing raw experimental data
-The raw data obtained from the experiment requires post-processing before analysing. To facilitate data analysis, a post-processing code has been developed, consisting of five main parts:
+The raw data obtained from the experiment at RPT laboratory at polytechnique Montreal requires post-processing before any type of analysing. To facilitate data analysis, a post-processing code has been developed. This code is developed to prepare a data set for ANN position reconstruction consisting of five main parts:
 1. `Cleaning the raw data`
    
 Initially, the code `PostprocessingDatafile_main` reads the original experiment file, `Data.txt`, which contains measurements from all 26 amplifiers. The counts recorded by each amplifier, whether they have been active during the experiment or not, will be extracted and written to another text file called `counts.txt`.
