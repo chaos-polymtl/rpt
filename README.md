@@ -29,5 +29,8 @@ In the final step, to address the mismatched sampling times between the robot an
 
 # ANN reconstruction
 
-The ANN reconstruction folder includes diffirent codes for particle position reconstruction in 1D, 2D and 3D.
+The ANN reconstruction folder includes different codes for particle position reconstruction in 1D, 2D, and 3D. In any of the `ANN_Reconstruction` codes, we follow the subsequent steps:
+1. We define the number of training points, denoted as `NUM_TP`. This excludes the points that we intend to avoid training the ANN with, for later reconstruction and testing purposes.
+2. We fill the `Feed` vector with the post-processed counts and their corresponding positions. With the knowledge of the home position of the robot, we subtract its position from all the training positions, effectively setting the home position as the origin of the experiment.
+3. We set up the concatenation layer to provide input to the initial hidden layer of the ANN................................................................................. 
 
