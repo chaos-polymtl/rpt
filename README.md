@@ -4,6 +4,7 @@ This repository includes all the data, script and codes that were used for recon
 It is divided into two folders. The folder `Raw_Data_Post_Processing` contains the files that used for post-processing the raw data from the experiments. The second folder, called `ANN_Recostruction`, contains the files that used to train the ANN and also the ANN reconstruction codes.
 
 # Post-processing raw experimental data
+
 The raw data obtained from the experiment at RPT laboratory at polytechnique Montreal requires post-processing before any type of analysing. To facilitate data analysis, a post-processing code has been developed. This code is developed to prepare a data set for ANN position reconstruction consisting of five main parts:
 1. `Cleaning the raw data`
    
@@ -26,6 +27,7 @@ Due to the stochastic nature of the radioactive data, before using the data to t
 In the final step, to address the mismatched sampling times between the robot and the RPT system, we perform data interpolation. The counts from the amplifiers are taken at a consistent sampling interval of 10 milliseconds, while the robot samples its position at seemingly irregular intervals. To rectify this disparity, interpolation is used to synchronize the count data from the amplifiers with the corresponding timestamps of the robot's position samples. This process allows for the estimation of count values at the specific timestamps of the robot's position measurements.
 
 
-
-
 # ANN reconstruction
+
+The ANN reconstruction folder includes diffirent codes for particle position reconstruction in 1D, 2D and 3D.
+
