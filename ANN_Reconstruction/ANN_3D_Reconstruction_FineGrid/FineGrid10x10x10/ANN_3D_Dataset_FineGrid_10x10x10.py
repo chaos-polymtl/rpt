@@ -12,7 +12,8 @@ import re
 import csv
 from keras import backend as K
 
-# Number of training points
+# Number of training points, this excludes the points that we tend to predict
+#It is equal to len(data_pos)-number_of_points_to_predict
 NUM_TP= 1031604
 
 # Feed file content
@@ -31,6 +32,7 @@ data_pos = np.loadtxt(filename_pos, delimiter=',')
 
 print(len(data_pos))
 
+#
 Feed[:,8] = (data_pos[0:NUM_TP, 0]-570.004)/1000
 Feed[:,9] = (data_pos[0:NUM_TP, 1]+169.990)/1000
 Feed[:,10] = (data_pos[0:NUM_TP, 2]-840.497)/1000
@@ -136,8 +138,10 @@ pyplot.legend()
 
 # In[13]:
 
+N=13000 # Number of points for the spiral, approximately it is the time that takes the robot does the spiral times 1000 ms, devided by 10 which sampling time
+
 # Array of the counts used for the prediction of the spiral
-Pred = data_counts[-13000:-1, :8] 
+Pred = data_counts[-N-1:-1, :8] 
 
 X_pre=Pred
 scaler_X_pre = MinMaxScaler()
@@ -146,16 +150,17 @@ X_scale_pre= scaler_X.transform(X_pre)
 count1_pre, count2_pre, count3_pre, count4_pre, count5_pre, count6_pre, count7_pre, count8_pre=np.transpose(X_scale_pre)
 prediction=model.predict([count1_pre, count2_pre, count3_pre, count4_pre, count5_pre, count6_pre, count7_pre, count8_pre])
 
-# Real position of the robot during the spiral
-x_real=(data_pos[-13000:-1, 0]-570.004)/1000
-y_real=(data_pos[-13000:-1, 1]+169.990)/1000  
-z_real=(data_pos[-13000:-1, 2]-840.497)/1000  
+# Real position of the robot for the prediction dataset, for example the spiral
+x_real=(data_pos[-N-1:-1, 0]-570.004)/1000
+y_real=(data_pos[-N-1:-1, 1]+169.990)/1000  
+z_real=(data_pos[-N-1:-1, 2]-840.497)/1000  
 
+#Plot the real position of the prediction dataset on Figure 1
 ax=plt.figure().add_subplot(projection='3d')
 ax.plot(x_real, y_real, z_real, label='Real')
 
 
-# Convert the data to a NumPy array
+# Predicted position of the robot for the prediction dataset, for example the spiral
 x_pred=np.zeros(len(x_real))
 y_pred=np.zeros(len(y_real))
 z_pred=np.zeros(len(z_real))
@@ -166,14 +171,15 @@ for i in range(len(x_pred)):
     y_pred[i]=prediction[1][i][0]
     z_pred[i]=prediction[2][i][0]
     
-    
+
+#Plot the predicted position of the prediction dataset on Figure 1
 ax.plot(x_pred,y_pred, z_pred,label='Prediction')
 ax.legend()
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('z')
 
-
+#Calculating the error of the predicted dataset, spiral
 Erreur_x=np.abs(x_pred-x_real)
 MAE_x=Erreur_x.mean()
 
@@ -189,9 +195,8 @@ print('MAE_x_spiral = ', MAE_x, '\n', 'MAE_y_spiral', MAE_y,'\n', 'MAE_z_spiral'
 # In[15]
 # Velocities
 
-N=9000 # Number of points for the spiral
-n_pts=125 # Number of points to skip for the centered second order derivative on the predicted spiral
-n_pts_real=1 # Number of points to skip for the centered second order derivative on the actual spiral
+n_pts=125 # Number of points further from the point of interest used for the centered second order derivative on the predicted spiral
+n_pts_real=1 # Number of points further from the point of interest used for the centered second order derivative on the predicted spiral
 
 # to make sure the velocity vector is the right size
 if N/n_pts %1 >=0.5:
