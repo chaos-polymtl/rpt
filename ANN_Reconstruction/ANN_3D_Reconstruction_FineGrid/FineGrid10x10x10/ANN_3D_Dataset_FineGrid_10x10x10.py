@@ -127,7 +127,7 @@ print(history.history)
 result=model.evaluate([count1_test, count2_test, count3_test, count4_test, count5_test, count6_test, count7_test, count8_test],[x_test,y_test,z_test],verbose=2)
 print(result)
 
-
+#Printing the loss function on Figure 1
 pyplot.subplot(211)
 pyplot.title('Loss RUN 4')
 plt.semilogy(history.history['loss'], label='train')
@@ -155,7 +155,7 @@ x_real=(data_pos[-N-1:-1, 0]-570.004)/1000
 y_real=(data_pos[-N-1:-1, 1]+169.990)/1000  
 z_real=(data_pos[-N-1:-1, 2]-840.497)/1000  
 
-#Plot the real position of the prediction dataset on Figure 1
+#Plot the real position of the prediction dataset on Figure 2
 ax=plt.figure().add_subplot(projection='3d')
 ax.plot(x_real, y_real, z_real, label='Real')
 
@@ -172,7 +172,7 @@ for i in range(len(x_pred)):
     z_pred[i]=prediction[2][i][0]
     
 
-#Plot the predicted position of the prediction dataset on Figure 1
+#Plot the predicted position of the prediction dataset on Figure 2
 ax.plot(x_pred,y_pred, z_pred,label='Prediction')
 ax.legend()
 ax.set_xlabel('x')
@@ -245,7 +245,7 @@ v_plan_pred=np.sqrt(np.square(v_x_pred)+np.square(v_y_pred))
 Phi_real=np.arctan2(v_z_real, v_plan_real)
 Phi_pred=np.arctan2(v_z_pred, v_plan_pred)
 
-# Plot of the velocity on the spiral position reconstruction plot
+# Plot of the velocity for the prediction dataset on Figure 2
 for i in range(len(v_pred)):
     if i*n_pts>N:
         break
@@ -295,16 +295,38 @@ MAE_phi=Erreur_phi.mean()
 
 print('MAE_vx = ', MAE_vx, '\n', 'MAE_vy = ', MAE_vy, '\n','MAE_vz = ', MAE_vz, '\n', 'MAE_v = ', MAE_v, '\n MAE_theta = ', MAE_theta, '\n MAE_phi = ', MAE_phi)
 
+# Plot for position reconstruction only
+
+# Real position of the robot during the spiral
+x_real=(data_pos[-N-1:-1, 0]-570.004)/1000
+y_real=(data_pos[-N-1:-1, 1]+169.990)/1000  
+z_real=(data_pos[-N-1:-1, 2]-840.497)/1000  
+
+# Plot of the real position for the prediction dataset on Figure 3
+ax=plt.figure().add_subplot(projection='3d')
+ax.plot(x_real, y_real, z_real, label='Real')
+
+
+# Plot of the predicted position for the prediction dataset on Figure 3
+ax.plot(x_pred,y_pred, z_pred,label='Prediction')
+ax.legend()
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z')
+
 # In[16]: 
 	
 # Lign pattern x
 
+#plot the line for fixing the lag on Figure 4
+#Considering a movement in x direction and knowing the velocity in this direction, we fix the lag using prediction of x
 plt.figure()
-plt.plot(Feed[5900:6700,8],Feed[5900:6700,9],label='Real')
+#Plot the real x and y on fifure 4
+plt.plot(Feed[5900:6700,8],Feed[5900:6700,9],label='Real') # 8th column is the x and 9th coloumn is the y
 plt.ylabel('y (m)')
 plt.xlabel('x (m)')
 
-
+#Feeding only x to the ANN
 X_pre=Feed[5900:6700,:8]
 scaler_X_pre = MinMaxScaler()
 scaler_X_pre.fit(X_pre)
@@ -312,12 +334,15 @@ X_scale_pre= scaler_X.transform(X_pre)
 count1_pre, count2_pre, count3_pre,count4_pre, count5_pre, count6_pre, count7_pre, count8_pre=np.transpose(X_scale_pre)
 prediction=model.predict([count1_pre, count2_pre, count3_pre,count4_pre, count5_pre, count6_pre, count7_pre, count8_pre])
 
+#Plot the predicted position on Figure 4
 plt.plot(prediction[0][:],prediction[1][:],label='Pred')
 plt.title('End pattern')
 plt.legend()
 
+#sampling time is a vector with the size equal to the number of the points on the line
 sampling_time=np.arange(800)
 
+#Plot the error of the x for every point on the line, on Figure 5
 plt.figure()
 plt.plot(sampling_time,Feed[5900:6700,8],label='Real')
 plt.plot(sampling_time,prediction[0][:],label='Pred')
@@ -325,7 +350,8 @@ plt.xlabel('Sampling time for the line')
 plt.ylabel('x')
 plt.legend()
 
-
+#Calculates the mean error on the line. When < 10^-4 (m), lag is considered fixed.
+#If (ERREURLAG>10^-4 (m)), the lag (sec) that data must be shifted is equal to ERREURLAG/velocity for the line (m/s)
 ERREURLAG=prediction[0][:]-Feed[5900:6700,8]
 ERREURLAG=ERREURLAG.mean()
 print('\n Erreur lag x : ', ERREURLAG)
