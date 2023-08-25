@@ -1,7 +1,7 @@
 # Radioactive Particle Tracking (RPT)
 
 This repository includes all the data, script and codes that were used for reconstructing the position of a radioactive particle using Artificial Neural Network (ANN).\
-It is divided into two folders. The folder `Raw_Data_Post_Processing` contains the files that used for post-processing the raw data from the experiments. The second folder, called `ANN_Recostruction`, contains the files that used to train the ANN and also the ANN reconstruction codes.
+It is divided into four folders. The folder `Raw_Data_Post_Processing` contains the files that used for post-processing the raw data from the experiments. The second folder, called `ANN_Recostruction`, contains the files that used to train the ANN and also the ANN reconstruction codes. The third folder, named `Robot_motion`, contains the files that are used for a variety of patterns for the robot's motion within the domain of interest. The fourth folder, named `LHS`, contains the codes for generating sampling points within the domain using the Latin Hypercube Sampling (LHS) method.
 
 # Post-processing raw experimental data
 
