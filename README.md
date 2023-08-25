@@ -37,17 +37,23 @@ In the final step, to address the mismatched sampling times between the robot an
 
 # ANN reconstruction
 
-The ANN reconstruction folder includes different codes for particle position reconstruction in 1D, 2D, and 3D. In any of the `ANN_Reconstruction` codes, we follow the subsequent steps:
-1. We define the number of training points, denoted as `NUM_TP`. This excludes the points that we intend to avoid training the ANN with, for later reconstruction and testing purposes.
-2. We fill the `Feed` vector with the post-processed counts and their corresponding positions. With the knowledge of the home position of the robot, we subtract its position from all the training positions, effectively setting the home position as the origin of the experiment.
-3. We set up the concatenation layer to provide input to the initial hidden layer of the ANN. We define the `number of layers`, the `number of neurons` in each layer, the type of `optimizer` and `loss function`, the `metrics` for assessment of the model, the `learning rate` of the model, the `split ratio` of training and validation data, the `batch size`, and finally, the number of `epochs`.
-4. 
+The ANN reconstruction folder includes different codes for particle position reconstruction in 1D, 2D, and 3D. The first step is fixing the lag between RPT system and robot properly.
+
 ### Fix the lag using ANN
 
-The cross-correlation method employed to address the lag between the RPT system and the robot isn't perfectly precise. Hence, ANN to accurately rectify the lag, following the steps outlined below:
+The cross-correlation method employed to address the lag between the RPT system and the robot isn't perfectly precise. Hence, we use ANN to accurately rectify the lag, following the steps outlined below:
 1. Identify a line in either the x or y direction along which the robot underwent motion, and determine its corresponding index points in the position file. One approach to accomplish this is through trial and error, achieved by printing various positions from the position file.
 2. Train the ANN with the post-processed data set.
 3. Reconstruct the line and assess the error (displacement) along its direction. For example, when dealing with a line along the x-axis, evaluate the error in the x-direction; similarly, for a line along the y-axis, assess the error in the y-direction.
 4. Calculate the remaining lag by dividing the determined error (in meters) by the velocity of the robot during the traversal of that line (in m/s). This calculation will yield the remaining lag value in seconds.
 5. In the post-processing code, incorporate either an addition or subtraction of the remaining lag to the calculated lag value.
-6. Repeat steps 2 to 5 until the evaluated error is below $10^{-4}$.
+6. Repeat steps 2 to 6 until the evaluated error is below $10^{-4}$ meter.
+
+### Position reconstruction using ANN
+
+After fixing the lag in all of the `ANN_Reconstruction` codes, we follow the subsequent steps:
+1. We define the number of training points, denoted as `NUM_TP`. This excludes the points that we intend to avoid training the ANN with, for later reconstruction and testing purposes.
+2. We fill the `Feed` vector with the post-processed counts and their corresponding positions. With the knowledge of the home position of the robot, we subtract its position from all the training positions, effectively setting the home position as the origin of the experiment.
+3. We set up the concatenation layer to provide input to the initial hidden layer of the ANN. We define the `number of layers`, the `number of neurons` in each layer, the type of `optimizer` and `loss function`, the `metrics` for assessment of the model, the `learning rate` of the model, the `split ratio` of training and validation data, the `batch size`, and finally, the number of `epochs`.
+4. 
+
