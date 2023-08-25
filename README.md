@@ -54,6 +54,8 @@ The cross-correlation method employed to address the lag between the RPT system 
 After fixing the lag in all of the `ANN_Reconstruction` codes, we follow the subsequent steps:
 1. We define the number of training points, denoted as `NUM_TP`. This excludes the points that we intend to avoid training the ANN with, for later reconstruction and testing purposes.
 2. We fill the `Feed` vector with the post-processed counts and their corresponding positions. With the knowledge of the home position of the robot, we subtract its position from all the training positions, effectively setting the home position as the origin of the experiment.
-3. We set up the concatenation layer to provide input to the initial hidden layer of the ANN. We define the `number of layers`, the `number of neurons` in each layer, the type of `optimizer` and `loss function`, the `metrics` for assessment of the model, the `learning rate` of the model, the `split ratio` of training and validation data, the `batch size`, and finally, the number of `epochs`.
-4. 
+3. We set up the concatenation layer to provide input to the initial hidden layer of the ANN.
+4. Then, we use the `MinMax` method from sklearn to scale the features in the interval of 0 to 1 to avoid any bias during the training.
+5. Finaly, we seperate the samples into two sets: training and testing. We use the `train_test_split` function from sklearn to perform the split.
+6. The method implemented utilizes the `TensorFlow` and `Keras` libraries to establish the architecture of the ANN. It constructs a deep network based on the method's arguments that define hyperparameters, including the layer count, neuron count, batch size, number of epochs, and activation function. Subsequently, the method compiles the ANN using the training dataset. Within the method, both the model itself and the ANN's training history are returned. This facilitates the monitoring of the loss function's progression over time.
 
