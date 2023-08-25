@@ -3,6 +3,14 @@
 This repository includes all the data, script and codes that were used for reconstructing the position of a radioactive particle using Artificial Neural Network (ANN).\
 It is divided into four folders. The folder `Raw_Data_Post_Processing` contains the files that used for post-processing the raw data from the experiments. The second folder, called `ANN_Recostruction`, contains the files that used to train the ANN and also the ANN reconstruction codes. The third folder, named `Robot_motion`, contains the files that are used for a variety of patterns for the robot's motion within the domain of interest. The fourth folder, named `LHS`, contains the codes for generating sampling points within the domain using the Latin Hypercube Sampling (LHS) method.
 
+# Robot motion
+
+We employ a robotic system to move a radioactive particle within our area of interest. This motion yields a substantial dataset comprising precise particle positions and the corresponding photon counts captured by detectors strategically positioned around the domain.
+
+# Latin Hypercube Sampling (LHS)
+
+LHS is a statistical method used to generate a nearly-random sample of parameter values from a multidimensional distribution. We utilize this method to generate points within the domain. The robot moves the particle between these nearly-random points to effectively sample the volume. This folder contains the respective codes for generating the points.
+
 # Post-processing raw experimental data
 
 The raw data obtained from the experiment at RPT laboratory at polytechnique Montreal requires post-processing before any type of analysing. To facilitate data analysis, a post-processing code has been developed. This code is developed to prepare a data set for ANN position reconstruction consisting of five main parts:
@@ -32,5 +40,4 @@ In the final step, to address the mismatched sampling times between the robot an
 The ANN reconstruction folder includes different codes for particle position reconstruction in 1D, 2D, and 3D. In any of the `ANN_Reconstruction` codes, we follow the subsequent steps:
 1. We define the number of training points, denoted as `NUM_TP`. This excludes the points that we intend to avoid training the ANN with, for later reconstruction and testing purposes.
 2. We fill the `Feed` vector with the post-processed counts and their corresponding positions. With the knowledge of the home position of the robot, we subtract its position from all the training positions, effectively setting the home position as the origin of the experiment.
-3. We set up the concatenation layer to provide input to the initial hidden layer of the ANN................................................................................. 
-
+3. We set up the concatenation layer to provide input to the initial hidden layer of the ANN. We define the number of layers, the number of neurons in each layer, the type of optimizer and loss function, the metrics for assessment of the model, the learning rate of the model, the split ratio of training and validation data, the batch size, and finally, the number of epochs.
