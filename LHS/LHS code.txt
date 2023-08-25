@@ -1,0 +1,248 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Aug 14 10:07:18 2023
+
+@author: Thomas MONATTE
+"""
+from scipy.stats import qmc 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import math 
+
+
+
+
+'This code aims to generate points inside the volume of interest using the Latin Hypercube Sampling (LHS) method.'
+
+
+
+########################       Parameters for the code       ######################## 
+
+# Samples number
+num_samples=10
+
+# Dimension of the geometry
+dim=3
+
+# Seed for the random numbers
+seed=1
+
+# Dimensions of the geometry in mm
+dime_XY=60
+dime_Z=60
+
+# Particle radius (in mm) to calculate the volume
+R=2
+
+# Plot in 3D
+title='Latin Hypercube Sampling ; 10 pts'
+
+# x1, x2, x3 are the positions of the particle 
+# respectively equals to x, y and z
+
+if dim==3:
+    bounds={"x1":[0,dime_XY],"x2":[-dime_XY/2,dime_XY/2],"x3":[-dime_Z,0]}  
+if dim==2:
+    bounds={"x1":[0,dime_XY],"x2":[-dime_XY/2,dime_XY/2]}  
+
+
+
+
+###########################     Function for LHS      ###########################
+
+
+def get_latin_hypercube_samples(bounds,num_samples,seed=None):
+    sampler=qmc.LatinHypercube(d=len(bounds),optimization="random-cd",seed=seed)
+    samples=sampler.random(num_samples)
+    l_bounds=[bound[0] for bound in bounds.values()]
+    u_bounds=[bound[1] for bound in bounds.values()]
+    samples=qmc.scale(samples,l_bounds,u_bounds)
+    return pd.DataFrame(samples,columns=list(bounds.keys()))
+
+
+latin_hypercube_samples=get_latin_hypercube_samples(bounds,num_samples,seed)
+
+if dim==2:
+    x1_values = latin_hypercube_samples["x1"].tolist()
+    x2_values = latin_hypercube_samples["x2"].tolist()
+if dim==3:
+    x1_values = latin_hypercube_samples["x1"].tolist()
+    x2_values = latin_hypercube_samples["x2"].tolist()
+    x3_values = latin_hypercube_samples["x3"].tolist()
+    
+    
+#######################     Files for positions      ########################### 
+
+
+# In 3D, open three files with respectively all the x, y and z positions 
+
+if dim==3:
+    with open('x1_values.txt','w') as file:
+        for element in x1_values:
+            file.write(str(element)+'\n')
+            
+    with open('x2_values.txt','w') as file:
+        for element in x2_values:
+            file.write(str(element)+'\n')
+    
+    with open('x3_values.txt','w') as file:
+        for element in x3_values:
+            file.write(str(element)+'\n')
+
+
+
+###########################     Plot Figures      ###########################
+
+
+# PLOT 2D
+if len(bounds)==2:
+    plt.scatter(x1_values,x2_values)
+    plt.xlabel('x1')
+    plt.ylabel('x2')
+    plt.title('Hyper Cube Latin 2D')
+    plt.show()
+
+# Plot 3D
+if len(bounds)==3:
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+         
+    ax.scatter(x1_values, x2_values, x3_values)    
+    ax.set_xlabel('X')
+    ax.set_xlim(dime_XY,0)
+    ax.set_ylabel('Y')
+    ax.set_ylim(dime_XY/2,-dime_XY/2)
+    ax.set_zlabel('Z')
+    ax.set_zlim(-dime_Z,0)
+    ax.set_title(title)
+    plt.show()
+    
+    plt.scatter(x2_values,x1_values)
+    plt.xlabel('Y')
+    plt.xlim(dime_XY/2,-dime_XY/2)
+    plt.ylabel('X')
+    plt.ylim(0,dime_XY)
+    plt.title('LHS upper view')
+    plt.show()
+    
+    plt.scatter(x2_values,x3_values)
+    plt.xlabel('Y')
+    plt.xlim(dime_XY/2,-dime_XY/2)
+    plt.ylabel('Z')
+    plt.ylim(-dime_Z,0)
+    plt.title('LHS side view')
+    plt.show()
+
+    
+    
+    
+    
+###########################     Euclidean distance      ########################### 
+
+all_list_dist=[]    # every distances between points, including peers and 0
+list_dist=[]        # every distance between points, including 0 and without peers
+list_mindist=[]     # the lowest distance for each points
+
+# Plot 2D
+
+if len(bounds)==2:
+    for k in range(len(x1_values)):
+        dist_point=[]   # All distances from one point
+        for i in range(len(x1_values)):
+            dist=math.sqrt((x1_values[k]-x1_values[i])**2+(x2_values[k]-x2_values[i])**2)
+            
+            all_list_dist.append(dist)
+            dist_point.append(dist)
+            
+        dist_point.remove(0)
+        list_mindist.append(min(dist_point))
+        
+    for k in range(len(x1_values)):       
+        for i in range(k,len(x1_values)):
+            dist=math.sqrt((x1_values[k]-x1_values[i])**2+(x2_values[k]-x2_values[i])**2)
+            list_dist.append(dist)
+    list_dist_wo0=[_ for _ in list_dist if _!=0] # every distance between points, without 0 and peers
+    s=0
+    for i in range(len(list_dist_wo0)):
+        s+=list_dist_wo0[i]
+    print('The average distance between points is',s/len(list_dist_wo0))
+             
+    s=0
+    for i in range(len(list_mindist)):
+        s+=list_mindist[i]  
+    print('The average of the distances from the nearest point is',s/len(list_mindist))   
+    print('The greatest distance is',max(all_list_dist))
+
+
+
+####
+
+# Plot 3D
+               
+if len(bounds)==3:
+    for k in range(len(x1_values)):
+        dist_point=[]
+        for i in range(len(x1_values)):
+            dist=math.sqrt((x1_values[k]-x1_values[i])**2+(x2_values[k]-x2_values[i])**2+(x3_values[k]-x3_values[i])**2)
+            
+            all_list_dist.append(dist)
+            dist_point.append(dist)
+            
+        dist_point.remove(0)
+        list_mindist.append(min(dist_point))
+        
+    for k in range(len(x1_values)):       
+        for i in range(k,len(x1_values)):
+            dist=math.sqrt((x1_values[k]-x1_values[i])**2+(x2_values[k]-x2_values[i])**2+(x3_values[k]-x3_values[i])**2)
+            list_dist.append(dist)
+    list_dist_wo0=[_ for _ in list_dist if _!=0] 
+    s=0
+    for i in range(len(list_dist_wo0)):
+        s+=list_dist_wo0[i]
+    
+    print()
+    print('Euclidian Distance (in mm):')
+    print()
+    av_dist=s/len(list_dist_wo0)
+    print('-  The average distance between points is',round(av_dist,3))
+             
+    s=0
+    for i in range(len(list_mindist)):
+        s+=list_mindist[i]  
+    print('-  The average of the distances from the nearest point is',s/len(list_mindist))   
+    print('-  The greatest distance is',max(all_list_dist))
+
+    s=0
+    for k in range(len(dist_point)):
+        s+=dist_point[k]
+        
+    total_distance_path=s  
+    print('-  The total distance of the path is',round(total_distance_path,3))
+    print()
+
+
+
+
+###########################      Volume calculation      ###########################
+
+if len(bounds)==3:
+    print('Volume Calculation (in mm^3):')
+    
+    Vp=4/3*math.pi*R**3    # Particle volume
+    Vc=dime_XY**2*dime_Z   # Cube volume 
+    
+    print()
+    print('Dimension :',dime_XY,'x',dime_XY,'x',dime_Z)
+    print( '-  Vp =',round(Vp,5),'and Vc =',round(Vc,5))
+    
+    V_path=math.pi*R**2*total_distance_path
+    
+    print('-  The volume of the path is about V_path=',round(V_path,3))
+    
+    r=(V_path/Vc)*100
+    print('-  An approximation of V_path / Vc is',round(r,1),'% with',num_samples,'samples')
+            
+            
+            
+            
