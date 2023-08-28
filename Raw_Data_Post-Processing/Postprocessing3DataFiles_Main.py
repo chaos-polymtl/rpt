@@ -8,7 +8,8 @@ from os.path import exists
 """
 #The raw data output from the RPT system need clean up before any manipulation
 #Read the RPT raw text file with the correct encoding
-
+#Data1, Data2, Data3 are the possible files from long experiments. Depending on how big are the experiments, RPT may break them to diffirnt files.
+#Having more than one Data file, here we put all the data in one file at the end.
 #Write the forth coloumn of the raw data (the only data to be extracted) 
 #in counts.txt
 with open("Data1.txt", "r",encoding='latin-1') as input_file:
