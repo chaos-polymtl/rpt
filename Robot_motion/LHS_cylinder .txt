@@ -6,9 +6,6 @@ Created on Tue Sep  5 16:38:42 2023
 """
 
 
-# The particle go in num_samples random positions in a cube of dime_XY for X and Y, dime_Z for Z
-# do one line with (vel_line ; acc_line), do a diaguonal with (vel_diag ; acc_diag)
-# and do a spiral in time_spiral
 
 ########################       Parameters for the code       ######################## 
 
