@@ -15,8 +15,8 @@ import math
 
 
 
-' This code aims to generates points within a cylinder using Latin Hypercube Sampling (LHS). It generates'
-' three files: x1_values_cyl, x2_values_cyl, and x3_values_cyl, which are x, y , and z positions in the cylinder.
+# This code aims to generates points within a cylinder using Latin Hypercube Sampling (LHS). It generates'
+# three files: x1_values_cyl, x2_values_cyl, and x3_values_cyl, which are x, y , and z positions in the cylinder.
 
 
 ########################       Parameters for the code       ######################## 
