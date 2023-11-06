@@ -13,14 +13,10 @@ import matplotlib.pyplot as plt
 import math 
 
 
-# FR
-' Ce code a pour but de créer des points aléatoires dans un cylindre d une facon aléatoire suivant le chemin' 
-' d un hyper cube latin. Il genere trois fichier: x1_values_cyl, x2_values_cyl et x3_values_cyl, nécessairent a l elaboration'
-' d une expérience de RPT'
 
-# EN
-' This code aims to create random points within a cylinder randomly following the path of a Latin hypercube. It generates'
-' three files: x1_values_cyl, x2_values_cyl, and x3_values_cyl, which are necessary for the development of an RPT experiment' 
+
+' This code aims to generates points within a cylinder using Latin Hypercube Sampling (LHS). It generates'
+' three files: x1_values_cyl, x2_values_cyl, and x3_values_cyl, which are x, y , and z positions in the cylinder.
 
 
 ########################       Parameters for the code       ######################## 
