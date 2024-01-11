@@ -36,6 +36,9 @@ z_max_tank = 0  # cm
 nr = 70  # in r direction
 nz = 120  # in z direction
 min_occurrence = 500
+# Savitzky-Golay filter parameters
+window_size = 10
+order = 2
 ######################################################################
 
 
@@ -82,7 +85,16 @@ def predict_position():
         predicted_y_pos[i] = prediction[1][i][0] * 100
         predicted_z_pos[i] = prediction[2][i][0] * 100
 
-    return predicted_x_pos, predicted_y_pos, predicted_z_pos
+    # Apply Savitzky-Golay filter
+
+    # Polynomial order
+    filtered_x = savgol_filter(predicted_x_pos, window_size, order)
+    filtered_y = savgol_filter(predicted_y_pos, window_size, order)
+    filtered_z = savgol_filter(predicted_z_pos, window_size, order)
+
+    return filtered_x, filtered_y, filtered_z
+
+    
 
 
 def translation():
