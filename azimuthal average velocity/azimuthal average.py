@@ -396,6 +396,8 @@ def plot_velocity():
 
     plt.savefig('radial_velocity_contour.png', dpi=500)  # Save the figure
 
+    plt.clf()
+
 
 def plot_sd():
 
@@ -463,6 +465,8 @@ def plot_sd():
     plt.title('Radial Velocity standard deviation Contour')
 
     plt.savefig('radial_velocity_contour_sd.png', dpi=500)  # Save the figure
+
+    plt.clf()
 
 
 #####################################################################
