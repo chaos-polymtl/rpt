@@ -232,6 +232,17 @@ class PostProcessSpiral:
             y_pred[i] = predicted_position[1][i][0] * 100
             z_pred[i] = predicted_position[2][i][0] * 100
 
+        error_x = np.abs(x_pred - x_real)
+        MAE_x = error_x.mean() * 10
+
+        error_y = np.abs(y_pred - y_real)
+        MAE_y = error_y.mean() * 10
+
+        error_z = np.abs(z_pred - z_real)
+        MAE_z = error_z.mean() * 10
+
+        print('MAE_x=', MAE_x, 'mm\nMAE_y =', MAE_y, 'mm\nMAE_z =', MAE_z, 'mm')
+
         fig = plt.figure()
         ax = fig.add_subplot(projection='3d')
         ax.plot(x_real, y_real, z_real, label='Robot trajectory', color="black")
