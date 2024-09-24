@@ -20,7 +20,7 @@ NUM_TP= 259364
 Feed=np.zeros([NUM_TP,11])
 
 # File for the number of counts
-filename_counts = 'simple_case_lhs.txt'
+filename_counts = 'simple_case_lhs_count.txt'
 data_counts = np.loadtxt(filename_counts, delimiter='\t')
 
 for i in range(8):
