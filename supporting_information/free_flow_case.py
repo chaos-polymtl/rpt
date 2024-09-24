@@ -49,7 +49,6 @@ z_max_tank = 0  # cm
 nr = 70  # in r direction
 nz = 140  # in z direction
 min_occurrence = 400
-density = 1270
 # Savitzky-Golay filter parameters
 window_size = 31
 order = 2
@@ -82,7 +81,7 @@ def predict_position():
         # Apply the filter to the i-th column
         filtered_data_counts[:, i] = savgol_filter(data_counts[:, i], 31, 2)
 
-    # load the trained model
+    # load the trained model from the robot
     model = load(open('model.pkl', 'rb'))
     # load the scaler
     scaler = load(open('scaler.pkl', 'rb'))
@@ -116,10 +115,9 @@ def predict_position():
 
 def translation():
     """
-    to find the origin
-    this part first find the origin of the available data and then shift it
-    here we also shift x to have the center of x also 0
-    then the new origin would be (0,0) instead of (10,0)
+    First, determine the origin of the available data and then apply a shift. 
+    Additionally, shift the x-coordinate so that its center aligns with zero. 
+    As a result, the new origin will be (0, 0) instead of (10, 0).
     """
 
     """
@@ -145,7 +143,7 @@ def translation():
 
 def xy_to_rz():
     """
-    calculate the r and z of each point in trajectory
+    Calculate the rr and zz of each point in the trajectory by converting Cartesian coordinates to cylindrical coordinates.
     """
 
     x_translated, y_translated = translation()
@@ -168,7 +166,7 @@ def xy_to_rz():
 
 def calculate_the_midpoints():
     """
-    calculate the mid points between each to recorded dat
+    calculate the mid point between each two recorded data points.
     """
     x_translated, y_translated = translation()
 
