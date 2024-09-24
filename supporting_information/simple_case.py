@@ -20,14 +20,14 @@ NUM_TP= 1031604
 Feed=np.zeros([NUM_TP,11])
 
 # File for the number of counts
-filename_counts = 'interpolaited_counts_all_dataset3D5.txt'
+filename_counts = 'simple_case_lhs.txt'
 data_counts = np.loadtxt(filename_counts, delimiter='\t')
 
 for i in range(8):
     Feed[:,i] = data_counts[0:NUM_TP, i]
 
 # File for the position x and y
-filename_pos = 'x_y_robot_position_dataset3D5.txt'
+filename_pos = 'robot_position.txt'
 data_pos = np.loadtxt(filename_pos, delimiter=',')
 
 print(len(data_pos))
