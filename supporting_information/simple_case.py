@@ -14,7 +14,7 @@ from keras import backend as K
 
 # Number of training points, this excludes the points that we tend to predict
 #It is equal to len(data_pos)-number_of_points_to_predict
-NUM_TP= 1031604
+NUM_TP= 259364
 
 # Feed file content
 Feed=np.zeros([NUM_TP,11])
@@ -83,7 +83,7 @@ model.compile(
 )
 
 # Define the learning rate
-LR=0.001
+LR=0.00001
 K.set_value(model.optimizer.learning_rate,LR)
 
 pd_dat = pd.read_csv('Feed.txt', delimiter='\t')
@@ -118,8 +118,8 @@ outputs_train=[x_train, y_train, z_train]
 
 history=model.fit(inputs_train,outputs_train,
                  validation_split=0.2,
-                 epochs=3000,
-                 batch_size=20000,
+                 epochs=6000,
+                 batch_size=50000,
                  )
 print(history.history)
 
